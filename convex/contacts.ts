@@ -109,61 +109,23 @@ ${args.message ? `💬 문의 내용:\n${args.message}` : ""}
 Contact ID: ${args.contactId}
     `.trim();
 
-    // 텔레그램 알림
-    if (process.env.OTP_ENDPOINT && process.env.CHAT_ID) {
-      try {
-        const response = await fetch(process.env.OTP_ENDPOINT, {
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            chat_id: process.env.CHAT_ID,
+            chat_id: process.env.TELEGRAM_CHAT_ID,
             text: emailBody,
           }),
-        });
-        if (!response.ok) {
-          console.error("Telegram 전송 실패:", await response.text());
         }
-      } catch (error) {
-        console.error("Telegram 전송 오류:", error);
+      );
+      if (!response.ok) {
+        console.error("Telegram 전송 실패:", await response.text());
       }
-    }
-
-    // 이메일 알림 (Resend)
-    if (process.env.RESEND_API_KEY && process.env.NOTIFICATION_EMAIL) {
-      try {
-        const serviceTypeText = args.serviceType === "coaching" ? "월 30만원 코칭 플랜" : "완전 대행 플랜";
-        const response = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "EverSpark <onboarding@resend.dev>",
-            to: [process.env.NOTIFICATION_EMAIL],
-            subject: `[EverSpark] 새 상담 신청 - ${args.name} (${args.businessType})`,
-            text: emailBody,
-            html: `
-              <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-                <h2 style="color:#f97316;">🔔 새 상담 신청이 접수되었습니다</h2>
-                <table style="width:100%;border-collapse:collapse;">
-                  <tr><td style="padding:8px;border:1px solid #eee;color:#666;">이름</td><td style="padding:8px;border:1px solid #eee;font-weight:bold;">${args.name}</td></tr>
-                  <tr><td style="padding:8px;border:1px solid #eee;color:#666;">연락처</td><td style="padding:8px;border:1px solid #eee;font-weight:bold;">${args.phone}</td></tr>
-                  <tr><td style="padding:8px;border:1px solid #eee;color:#666;">업종</td><td style="padding:8px;border:1px solid #eee;">${args.businessType}</td></tr>
-                  <tr><td style="padding:8px;border:1px solid #eee;color:#666;">신청 서비스</td><td style="padding:8px;border:1px solid #eee;">${serviceTypeText}</td></tr>
-                  <tr><td style="padding:8px;border:1px solid #eee;color:#666;">문의 내용</td><td style="padding:8px;border:1px solid #eee;">${args.message || "-"}</td></tr>
-                </table>
-                <p style="color:#999;font-size:12px;margin-top:16px;">접수 시간: ${new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}</p>
-              </div>
-            `,
-          }),
-        });
-        if (!response.ok) {
-          console.error("이메일 전송 실패:", await response.text());
-        }
-      } catch (error) {
-        console.error("이메일 전송 오류:", error);
-      }
+    } catch (error) {
+      console.error("Telegram 전송 오류:", error);
     }
   },
 });
