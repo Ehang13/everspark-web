@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 100% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 25 95% 53%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    
+    /* Section spacing */
+    --section-padding-y: 5rem;
+    --section-padding-y-lg: 6rem;
+    --container-max-width: 72rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-background text-foreground;
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+    line-height: 1.3;
+  }
+}
+
+/* Global utility classes for consistent styling */
+@layer components {
+  /* Section spacing - consistent vertical rhythm */
+  .section-padding {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+  
+  /* Container with max-width */
+  .section-container {
+    @apply container mx-auto px-4 max-w-6xl;
+  }
+  
+  /* 2-column responsive grid: stacked on mobile, side-by-side on desktop */
+  .grid-2col {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8;
+  }
+  
+  /* Button styles - Primary (filled) */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 
+           font-semibold px-6 py-3 rounded-lg transition-all duration-200
+           shadow-sm hover:shadow-md active:scale-[0.98];
+  }
+  
+  /* Button styles - Secondary (outline) */
+  .btn-secondary {
+    @apply border-2 border-primary text-primary bg-transparent
+           hover:bg-primary hover:text-primary-foreground
+           font-semibold px-6 py-3 rounded-lg transition-all duration-200
+           active:scale-[0.98];
+  }
+  
+  /* Button styles - Ghost (minimal) */
+  .btn-ghost {
+    @apply text-foreground hover:bg-muted
+           font-medium px-4 py-2 rounded-lg transition-all duration-200;
+  }
+  
+  /* Card with clean B2B styling */
+  .card-b2b {
+    @apply bg-card border border-border rounded-xl p-6 md:p-8
+           shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  
+  /* Section title styling */
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4;
+  }
+  
+  /* Section subtitle/description */
+  .section-subtitle {
+    @apply text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto;
+  }
+  
+  /* Text content with good readability */
+  .prose-content {
+    @apply text-base md:text-lg text-foreground/80 leading-relaxed;
+  }
+}
+
+/* Hide Next.js badge and error messages */
+body > nextjs-portal {
+  display: none;
+}
