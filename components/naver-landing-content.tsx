@@ -371,7 +371,7 @@ export default function NaverLandingContent() {
             {/* Coaching Plan */}
             <Card className="border-2 border-orange-500 bg-gray-900/80 backdrop-blur shadow-2xl shadow-orange-500/20 hover:shadow-orange-500/30 transition-all transform hover:-translate-y-2">
               <div className="bg-gradient-to-br from-orange-600 to-orange-700 text-white p-6 text-center">
-                <h3 className="text-2xl font-bold mb-2">월 30만원 코칭형</h3>
+                <h3 className="text-2xl font-bold mb-2">월 15만원 코칭형</h3>
                 <p className="text-orange-50">직접 배우고 싶은 실전형 사장님을 위한</p>
               </div>
               <CardContent className="p-8 space-y-6">
@@ -438,10 +438,10 @@ export default function NaverLandingContent() {
 
                   <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
                     <p className="text-amber-400 font-semibold">
-                      💰 맞춤 견적형
+                      💰 월 30만원부터
                     </p>
                     <p className="text-gray-300 text-sm mt-1">
-                      업종, 지역, 작업 범위에 따라 비용이 달라지는 맞춤 견적형 플랜입니다
+                      업종, 지역, 작업 범위에 따라 비용이 달라지는 맞춤형 플랜입니다
                     </p>
                   </div>
 
@@ -655,7 +655,7 @@ export default function NaverLandingContent() {
               <CardContent className="p-6 space-y-4">
                 <div className="text-center pb-4 border-b border-gray-700">
                   <h3 className="text-2xl font-bold text-orange-400">코칭 플랜</h3>
-                  <div className="text-3xl font-extrabold text-white mt-1">월 30만원</div>
+                  <div className="text-3xl font-extrabold text-white mt-1">월 15만원</div>
                 </div>
                 
                 <p className="text-gray-300 text-center text-sm">
@@ -675,7 +675,7 @@ export default function NaverLandingContent() {
               <CardContent className="p-6 space-y-4">
                 <div className="text-center pb-4 border-b border-gray-700">
                   <h3 className="text-2xl font-bold text-blue-400">완전 대행</h3>
-                  <div className="text-3xl font-extrabold text-white mt-1">맞춤 견적</div>
+                  <div className="text-3xl font-extrabold text-white mt-1">월 30만원부터</div>
                 </div>
                 
                 <p className="text-gray-300 text-center text-sm">
