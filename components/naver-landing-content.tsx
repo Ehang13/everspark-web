@@ -23,7 +23,7 @@ import {
 
 export default function NaverLandingContent() {
   const openKakaoChat = () => {
-    window.open('https://pf.kakao.com/_xmlUxgn/chat', '_blank');
+    window.open('http://pf.kakao.com/_xmLUxgn/chat', '_blank');
   };
 
   const openModal = (_serviceType: "coaching" | "agency") => {
