@@ -17,10 +17,12 @@ export default defineSchema({
   contacts: defineTable({
     name: v.string(),
     phone: v.string(),
+    businessName: v.optional(v.string()),
     businessType: v.string(),
     serviceType: v.string(), // "coaching" or "agency"
     message: v.optional(v.string()),
-    status: v.string(), // "new", "contacted", "completed"
+    consultationNote: v.optional(v.string()),
+    status: v.string(), // "new", "contacted", "completed", "cancelled"
     createdAt: v.number(),
   })
     .index("by_status", ["status"])

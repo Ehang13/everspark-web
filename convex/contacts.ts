@@ -60,6 +60,49 @@ export const createContact = mutation({
   },
 });
 
+// Mutation: 관리자가 직접 상담 기록 추가
+export const createContactByAdmin = mutation({
+  args: {
+    name: v.string(),
+    phone: v.string(),
+    businessName: v.optional(v.string()),
+    businessType: v.string(),
+    serviceType: v.string(),
+    message: v.optional(v.string()),
+    consultationNote: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const isUserAdmin: boolean = await ctx.runQuery(api.authz.isAdmin, {});
+    if (!isUserAdmin) return { ok: false, message: "관리자만 접근할 수 있습니다." };
+    const contactId = await ctx.db.insert("contacts", {
+      name: args.name,
+      phone: args.phone,
+      businessName: args.businessName,
+      businessType: args.businessType,
+      serviceType: args.serviceType,
+      message: args.message,
+      consultationNote: args.consultationNote,
+      status: "new",
+      createdAt: Date.now(),
+    });
+    return { ok: true, contactId };
+  },
+});
+
+// Mutation: 상담 메모 업데이트 - 관리자 전용
+export const updateConsultationNote = mutation({
+  args: {
+    id: v.id("contacts"),
+    consultationNote: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const isUserAdmin: boolean = await ctx.runQuery(api.authz.isAdmin, {});
+    if (!isUserAdmin) return { ok: false, message: "관리자만 접근할 수 있습니다." };
+    await ctx.db.patch(args.id, { consultationNote: args.consultationNote });
+    return { ok: true };
+  },
+});
+
 // Mutation: 상담 신청 상태 변경 - 관리자 전용
 export const updateContactStatus = mutation({
   args: {

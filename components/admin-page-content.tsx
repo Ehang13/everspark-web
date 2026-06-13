@@ -74,6 +74,51 @@ export default function AdminPageContent() {
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const updateContactStatus = useMutation(api.contacts.updateContactStatus);
+  const updateConsultationNote = useMutation(api.contacts.updateConsultationNote);
+  const createContactByAdmin = useMutation(api.contacts.createContactByAdmin);
+
+  // New contact form state
+  const [showNewContactForm, setShowNewContactForm] = useState(false);
+  const [newContactForm, setNewContactForm] = useState({
+    name: "",
+    phone: "",
+    businessName: "",
+    businessType: "",
+    serviceType: "coaching" as "coaching" | "agency",
+    message: "",
+    consultationNote: "",
+  });
+  const [isSavingContact, setIsSavingContact] = useState(false);
+
+  // Consultation note edit state
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editingNoteText, setEditingNoteText] = useState("");
+
+  const handleNewContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newContactForm.name || !newContactForm.phone || !newContactForm.businessType) return;
+    setIsSavingContact(true);
+    try {
+      await createContactByAdmin({
+        name: newContactForm.name,
+        phone: newContactForm.phone,
+        businessName: newContactForm.businessName || undefined,
+        businessType: newContactForm.businessType,
+        serviceType: newContactForm.serviceType,
+        message: newContactForm.message || undefined,
+        consultationNote: newContactForm.consultationNote || undefined,
+      });
+      setNewContactForm({ name: "", phone: "", businessName: "", businessType: "", serviceType: "coaching", message: "", consultationNote: "" });
+      setShowNewContactForm(false);
+    } finally {
+      setIsSavingContact(false);
+    }
+  };
+
+  const handleSaveNote = async (contactId: string) => {
+    await updateConsultationNote({ id: contactId as any, consultationNote: editingNoteText });
+    setEditingNoteId(null);
+  };
 
   const CONTACT_STATUSES = [
     { value: "new", label: "신규", color: "bg-blue-100 text-blue-700" },
@@ -375,9 +420,70 @@ export default function AdminPageContent() {
 
           {/* Contacts Tab */}
           <TabsContent value="contacts">
+            {/* Action bar */}
+            <div className="flex justify-end mb-4">
+              <Button onClick={() => setShowNewContactForm(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                새 상담 기록 추가
+              </Button>
+            </div>
+
+            {/* New Contact Form */}
+            {showNewContactForm && (
+              <Card className="mb-6">
+                <CardHeader>
+                  <CardTitle>새 상담 기록 추가</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleNewContactSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>이름 *</Label>
+                        <Input value={newContactForm.name} onChange={(e) => setNewContactForm({ ...newContactForm, name: e.target.value })} placeholder="홍길동" required />
+                      </div>
+                      <div>
+                        <Label>연락처 *</Label>
+                        <Input value={newContactForm.phone} onChange={(e) => setNewContactForm({ ...newContactForm, phone: e.target.value })} placeholder="010-1234-5678" required />
+                      </div>
+                      <div>
+                        <Label>상호명</Label>
+                        <Input value={newContactForm.businessName} onChange={(e) => setNewContactForm({ ...newContactForm, businessName: e.target.value })} placeholder="예: 홍길동 한의원" />
+                      </div>
+                      <div>
+                        <Label>업종 *</Label>
+                        <Input value={newContactForm.businessType} onChange={(e) => setNewContactForm({ ...newContactForm, businessType: e.target.value })} placeholder="예: 한의원, 카페" required />
+                      </div>
+                      <div>
+                        <Label>신청 서비스</Label>
+                        <Select value={newContactForm.serviceType} onValueChange={(v: "coaching" | "agency") => setNewContactForm({ ...newContactForm, serviceType: v })}>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="coaching">월 30만원 코칭 플랜</SelectItem>
+                            <SelectItem value="agency">완전 대행 플랜</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div>
+                      <Label>문의 내용</Label>
+                      <Textarea value={newContactForm.message} onChange={(e) => setNewContactForm({ ...newContactForm, message: e.target.value })} placeholder="고객이 문의한 내용" rows={2} />
+                    </div>
+                    <div>
+                      <Label>상담 메모</Label>
+                      <Textarea value={newContactForm.consultationNote} onChange={(e) => setNewContactForm({ ...newContactForm, consultationNote: e.target.value })} placeholder="상담 내용, 특이사항 등 메모" rows={3} />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button type="submit" disabled={isSavingContact}>{isSavingContact ? "저장 중..." : "저장"}</Button>
+                      <Button type="button" variant="outline" onClick={() => setShowNewContactForm(false)}>취소</Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
+
             {contacts.length === 0 ? (
               <div className="bg-white rounded-lg shadow p-12 text-center">
-                <p className="text-gray-500">아직 상담 신청이 없습니다.</p>
+                <p className="text-gray-500">아직 상담 기록이 없습니다.</p>
               </div>
             ) : (
               <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -386,11 +492,12 @@ export default function AdminPageContent() {
                     <TableRow>
                       <TableHead>접수일시</TableHead>
                       <TableHead>이름</TableHead>
+                      <TableHead>상호명</TableHead>
                       <TableHead>연락처</TableHead>
                       <TableHead>업종</TableHead>
                       <TableHead>서비스</TableHead>
                       <TableHead>상태</TableHead>
-                      <TableHead>문의내용</TableHead>
+                      <TableHead>상담메모</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -405,22 +512,13 @@ export default function AdminPageContent() {
                             minute: "2-digit",
                           })}
                         </TableCell>
-                        <TableCell className="font-medium">
-                          {contact.name}
-                        </TableCell>
+                        <TableCell className="font-medium">{contact.name}</TableCell>
+                        <TableCell className="text-sm text-gray-600">{(contact as any).businessName || "-"}</TableCell>
                         <TableCell>{contact.phone}</TableCell>
                         <TableCell>{contact.businessType}</TableCell>
                         <TableCell>
-                          <Badge
-                            variant={
-                              contact.serviceType === "coaching"
-                                ? "default"
-                                : "secondary"
-                            }
-                          >
-                            {contact.serviceType === "coaching"
-                              ? "월 30만원 코칭"
-                              : "완전 대행"}
+                          <Badge variant={contact.serviceType === "coaching" ? "default" : "secondary"}>
+                            {contact.serviceType === "coaching" ? "코칭" : "대행"}
                           </Badge>
                         </TableCell>
                         <TableCell>
@@ -430,37 +528,61 @@ export default function AdminPageContent() {
                               void updateContactStatus({ id: contact._id, status: value })
                             }
                           >
-                            <SelectTrigger className={`w-28 text-xs font-medium border-0 ${getStatusColor(contact.status)}`}>
+                            <SelectTrigger className={`w-24 text-xs font-medium border-0 ${getStatusColor(contact.status)}`}>
                               <SelectValue>{getStatusLabel(contact.status)}</SelectValue>
                             </SelectTrigger>
                             <SelectContent>
                               {CONTACT_STATUSES.map((s) => (
                                 <SelectItem key={s.value} value={s.value}>
-                                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${s.color}`}>
-                                    {s.label}
-                                  </span>
+                                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${s.color}`}>{s.label}</span>
                                 </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </TableCell>
-                        <TableCell className="max-w-[200px]">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-600 truncate flex-1">
-                              {contact.message || "-"}
-                            </span>
-                            {contact.message && (
+                        <TableCell className="max-w-[220px]">
+                          {editingNoteId === contact._id ? (
+                            <div className="flex flex-col gap-1">
+                              <Textarea
+                                value={editingNoteText}
+                                onChange={(e) => setEditingNoteText(e.target.value)}
+                                rows={2}
+                                className="text-xs"
+                                autoFocus
+                              />
+                              <div className="flex gap-1">
+                                <Button size="sm" className="h-6 text-xs px-2" onClick={() => void handleSaveNote(contact._id)}>저장</Button>
+                                <Button size="sm" variant="ghost" className="h-6 text-xs px-2" onClick={() => setEditingNoteId(null)}>취소</Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-start gap-1">
+                              <span className="text-sm text-gray-600 truncate flex-1">
+                                {(contact as any).consultationNote || "-"}
+                              </span>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setEditingNoteId(contact._id);
+                                  setEditingNoteText((contact as any).consultationNote || "");
+                                }}
+                                className="shrink-0 text-orange-600 hover:text-orange-700 hover:bg-orange-50 px-1 h-6"
+                              >
+                                <Edit className="h-3 w-3" />
+                              </Button>
                               <Button
                                 type="button"
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => setSelectedContact(contact)}
-                                className="shrink-0 text-orange-600 hover:text-orange-700 hover:bg-orange-50 px-2"
+                                className="shrink-0 text-gray-400 hover:text-gray-600 px-1 h-6"
                               >
-                                <Eye className="h-4 w-4" />
+                                <Eye className="h-3 w-3" />
                               </Button>
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -486,6 +608,12 @@ export default function AdminPageContent() {
                         <p className="text-gray-500 mb-1">연락처</p>
                         <p className="font-medium">{selectedContact.phone}</p>
                       </div>
+                      {(selectedContact as any).businessName && (
+                        <div>
+                          <p className="text-gray-500 mb-1">상호명</p>
+                          <p className="font-medium">{(selectedContact as any).businessName}</p>
+                        </div>
+                      )}
                       <div>
                         <p className="text-gray-500 mb-1">업종</p>
                         <p className="font-medium">{selectedContact.businessType}</p>
@@ -509,13 +637,23 @@ export default function AdminPageContent() {
                         </span>
                       </div>
                     </div>
-                    <div>
-                      <p className="text-gray-500 mb-2 text-sm">문의 내용</p>
-                      <div className="bg-gray-50 rounded-lg p-4 max-h-60 overflow-y-auto">
-                        <p className="text-sm whitespace-pre-wrap">
-                          {selectedContact.message || "문의 내용이 없습니다."}
-                        </p>
+                    {selectedContact.message && (
+                      <div>
+                        <p className="text-gray-500 mb-2 text-sm">문의 내용</p>
+                        <div className="bg-gray-50 rounded-lg p-4 max-h-40 overflow-y-auto">
+                          <p className="text-sm whitespace-pre-wrap">{selectedContact.message}</p>
+                        </div>
                       </div>
+                    )}
+                    <div>
+                      <p className="text-gray-500 mb-2 text-sm">상담 메모</p>
+                      <Textarea
+                        defaultValue={(selectedContact as any).consultationNote || ""}
+                        rows={4}
+                        placeholder="상담 내용, 특이사항 등 메모..."
+                        onBlur={(e) => void updateConsultationNote({ id: selectedContact._id, consultationNote: e.target.value })}
+                      />
+                      <p className="text-xs text-gray-400 mt-1">클릭 후 입력, 포커스 해제 시 자동 저장</p>
                     </div>
                   </div>
                 )}

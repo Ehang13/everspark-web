@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import ContactFormModal from "@/components/contact-form-modal";
 import Image from "next/image";
 import Link from "next/link";
 import { 
@@ -24,12 +22,12 @@ import {
 } from "lucide-react";
 
 export default function NaverLandingContent() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedServiceType, setSelectedServiceType] = useState<"coaching" | "agency">("coaching");
+  const openKakaoChat = () => {
+    window.open('https://pf.kakao.com/_xmlUxgn/chat', '_blank');
+  };
 
-  const openModal = (serviceType: "coaching" | "agency") => {
-    setSelectedServiceType(serviceType);
-    setIsModalOpen(true);
+  const openModal = (_serviceType: "coaching" | "agency") => {
+    openKakaoChat();
   };
 
   const scrollToServices = () => {
@@ -39,18 +37,8 @@ export default function NaverLandingContent() {
     }
   };
 
-  const openKakaoChat = () => {
-    window.open('http://pf.kakao.com/_xmLUxgn', '_blank');
-  };
-
   return (
     <div className="min-h-screen bg-gray-950">
-      <ContactFormModal 
-        open={isModalOpen} 
-        onOpenChange={setIsModalOpen}
-        defaultServiceType={selectedServiceType}
-      />
-      
       {/* Fixed Header Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-gray-800/50 bg-gray-900/80 backdrop-blur-md">
         <div className="container mx-auto px-4 py-3">
