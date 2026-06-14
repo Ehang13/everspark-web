@@ -44,18 +44,6 @@ export default function Home() {
                 name: '네이버 코칭 플랜',
                 description: '직접 마케팅을 배우고 실행하는 실전형 코칭 서비스',
               },
-              price: '300000',
-              priceCurrency: 'KRW',
-              priceSpecification: {
-                '@type': 'UnitPriceSpecification',
-                price: '300000',
-                priceCurrency: 'KRW',
-                referenceQuantity: {
-                  '@type': 'QuantitativeValue',
-                  value: '1',
-                  unitText: '월',
-                },
-              },
             },
             {
               '@type': 'Offer',
@@ -63,11 +51,6 @@ export default function Home() {
                 '@type': 'Service',
                 name: '네이버 완전 대행',
                 description: '네이버 플레이스 & 블로그 완전 대행 서비스',
-              },
-              priceSpecification: {
-                '@type': 'PriceSpecification',
-                priceCurrency: 'KRW',
-                description: '맞춤 견적형',
               },
             },
           ],
@@ -78,7 +61,7 @@ export default function Home() {
         '@id': 'https://everspark.co.kr/#webpage',
         url: 'https://everspark.co.kr',
         name: '네이버 마케팅 전문 코칭 & 대행 | EverSpark',
-        description: '네이버 검색 노출의 90%를 차지하는 블로그와 플레이스 마케팅 전문. 월 30만원 코칭형과 맞춤 견적 대행형으로 중소사업자의 온라인 성장을 돕습니다.',
+        description: '네이버 검색 노출의 90%를 차지하는 블로그와 플레이스 마케팅 전문. 코칭형과 맞춤 견적 대행형으로 중소사업자의 온라인 성장을 돕습니다.',
         inLanguage: 'ko-KR',
         isPartOf: {
           '@id': 'https://everspark.co.kr/#website',

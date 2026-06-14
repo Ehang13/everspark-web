@@ -371,7 +371,7 @@ export default function NaverLandingContent() {
             {/* Coaching Plan */}
             <Card className="border-2 border-orange-500 bg-gray-900/80 backdrop-blur shadow-2xl shadow-orange-500/20 hover:shadow-orange-500/30 transition-all transform hover:-translate-y-2">
               <div className="bg-gradient-to-br from-orange-600 to-orange-700 text-white p-6 text-center">
-                <h3 className="text-2xl font-bold mb-2">월 15만원 코칭형</h3>
+                <h3 className="text-2xl font-bold mb-2">코칭형</h3>
                 <p className="text-orange-50">직접 배우고 싶은 실전형 사장님을 위한</p>
               </div>
               <CardContent className="p-8 space-y-6">
@@ -434,15 +434,6 @@ export default function NaverLandingContent() {
                       <h4 className="font-bold text-white mb-1">대상</h4>
                       <p className="text-gray-300">시간이 없고, 네이버를 전문가에게 전적으로 맡기고 싶은 분</p>
                     </div>
-                  </div>
-
-                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-                    <p className="text-amber-400 font-semibold">
-                      💰 월 30만원부터
-                    </p>
-                    <p className="text-gray-300 text-sm mt-1">
-                      업종, 지역, 작업 범위에 따라 비용이 달라지는 맞춤형 플랜입니다
-                    </p>
                   </div>
 
                   <div className="pt-4 border-t border-gray-700">
@@ -625,76 +616,6 @@ export default function NaverLandingContent() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing & CTA Section */}
-      <section className="py-20 relative" style={{
-        background: 'linear-gradient(135deg, #1a1a4e 0%, #2d1b4e 50%, #1a1a4e 100%)'
-      }}>
-        {/* Decorative elements */}
-        <div className="absolute inset-0 overflow-hidden opacity-30">
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              가격과 신청 방법
-            </h2>
-            <p className="text-xl text-gray-300">
-              지금 바로 시작하세요
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Coaching Plan */}
-            <Card className="bg-gray-900/90 backdrop-blur border-2 border-orange-500/50 shadow-xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="text-center pb-4 border-b border-gray-700">
-                  <h3 className="text-2xl font-bold text-orange-400">코칭 플랜</h3>
-                  <div className="text-3xl font-extrabold text-white mt-1">월 15만원</div>
-                </div>
-                
-                <p className="text-gray-300 text-center text-sm">
-                  키워드 세팅 · 콘텐츠 제안 · 글 피드백 · 플레이스 최적화
-                </p>
-
-                <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-5 font-bold rounded-full"
-                  onClick={() => openModal("coaching")}
-                >
-                  코칭 신청하기
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Agency Plan */}
-            <Card className="bg-gray-900/90 backdrop-blur border-2 border-blue-500/50 shadow-xl">
-              <CardContent className="p-6 space-y-4">
-                <div className="text-center pb-4 border-b border-gray-700">
-                  <h3 className="text-2xl font-bold text-blue-400">완전 대행</h3>
-                  <div className="text-3xl font-extrabold text-white mt-1">월 30만원부터</div>
-                </div>
-                
-                <p className="text-gray-300 text-center text-sm">
-                  플레이스 세팅 · 블로그 대행 · 키워드 최적화 · 평판 관리
-                </p>
-
-                <Button variant="outline" className="w-full border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white py-5 font-bold rounded-full"
-                  onClick={() => openModal("agency")}
-                >
-                  대행 상담 신청하기
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-gray-400">
-              💳 결제는 상담 후 카카오페이, 계좌이체, 카드결제 등 편한 방식으로 진행 가능합니다
-            </p>
           </div>
         </div>
       </section>
