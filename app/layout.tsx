@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://everspark.co.kr'),
+  metadataBase: new URL('https://www.everspark.co.kr'),
   title: {
     default: "네이버 마케팅 전문 코칭 & 대행 | EverSpark",
     template: "%s | EverSpark",
@@ -34,9 +34,6 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
     },
-  },
-  alternates: {
-    canonical: "https://everspark.co.kr",
   },
   other: {
     "google-adsense-account": "ca-pub-1003903987965954",

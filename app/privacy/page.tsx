@@ -5,6 +5,9 @@ import Image from 'next/image';
 export const metadata: Metadata = {
   title: '개인정보처리방침 | EverSpark',
   description: 'EverSpark의 개인정보 수집 및 이용, 보관 기간, 제3자 제공 등에 대한 정책을 안내합니다.',
+  alternates: {
+    canonical: 'https://www.everspark.co.kr/privacy',
+  },
 };
 
 export default function PrivacyPage() {

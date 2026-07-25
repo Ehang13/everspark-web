@@ -2,7 +2,14 @@ import type { Metadata } from 'next';
 import siteMetadata from '@/app/metadata.json';
 import NaverLandingContent from '@/components/naver-landing-content';
 
-export const metadata: Metadata = siteMetadata['/'];
+const siteUrl = 'https://www.everspark.co.kr';
+
+export const metadata: Metadata = {
+  ...siteMetadata['/'],
+  alternates: {
+    canonical: `${siteUrl}/`,
+  },
+};
 
 export default function Home() {
   const jsonLd = {
@@ -10,9 +17,9 @@ export default function Home() {
     '@graph': [
       {
         '@type': 'Organization',
-        '@id': 'https://everspark.co.kr/#organization',
+        '@id': `${siteUrl}/#organization`,
         name: 'EverSpark',
-        url: 'https://everspark.co.kr',
+        url: `${siteUrl}/`,
         logo: {
           '@type': 'ImageObject',
           url: 'https://assets.macaly-user-data.dev/cdn-cgi/image/format=webp,width=200,height=200,fit=scale-down,quality=90,anim=true/qk03svjcyig9ubqocjhegz95/j27ye25azcxwlnug91w5wl7d/IkU-FEG69o2vhW_L6jqWS.png',
@@ -24,10 +31,10 @@ export default function Home() {
       },
       {
         '@type': 'Service',
-        '@id': 'https://everspark.co.kr/#service',
+        '@id': `${siteUrl}/#service`,
         serviceType: '네이버 마케팅 코칭 & 대행',
         provider: {
-          '@id': 'https://everspark.co.kr/#organization',
+          '@id': `${siteUrl}/#organization`,
         },
         areaServed: {
           '@type': 'Country',
@@ -58,22 +65,22 @@ export default function Home() {
       },
       {
         '@type': 'WebPage',
-        '@id': 'https://everspark.co.kr/#webpage',
-        url: 'https://everspark.co.kr',
+        '@id': `${siteUrl}/#webpage`,
+        url: `${siteUrl}/`,
         name: '네이버 마케팅 전문 코칭 & 대행 | EverSpark',
         description: '네이버 검색 노출의 90%를 차지하는 블로그와 플레이스 마케팅 전문. 코칭형과 맞춤 견적 대행형으로 중소사업자의 온라인 성장을 돕습니다.',
         inLanguage: 'ko-KR',
         isPartOf: {
-          '@id': 'https://everspark.co.kr/#website',
+          '@id': `${siteUrl}/#website`,
         },
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://everspark.co.kr/#website',
-        url: 'https://everspark.co.kr',
+        '@id': `${siteUrl}/#website`,
+        url: `${siteUrl}/`,
         name: 'EverSpark',
         publisher: {
-          '@id': 'https://everspark.co.kr/#organization',
+          '@id': `${siteUrl}/#organization`,
         },
         inLanguage: 'ko-KR',
       },
